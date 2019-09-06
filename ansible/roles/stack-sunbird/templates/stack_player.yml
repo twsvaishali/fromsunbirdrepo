@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  player:
+    image: "{{hub_org}}/{{image_name}}:{{image_tag}}"
+    deploy:
+      replicas: {{ player_replicas | default(1) }}
+      resources:
+        reservations:
+          memory: "{{ player_reservation_memory  | default('64M') }}"
+        limits:
+          memory: "{{ player_limit_memory  | default('256M') }}"
+    volumes:
+     - "{% if player_tenant_dir is defined and player_tenant_dir %}{{ player_tenant_dir }}:/home/sunbird/dist/tenant{% else %}/home/sunbird/dist/tenant{% endif %}"
+    env_file:
+      /home/deployer/env/sunbird_player.env
+    ports:
+     - "3000:3000"
+    networks:
+      - application_default
+
+volumes:
+ player:
+    driver: local
+
+networks:
+  application_default:
+    external: true

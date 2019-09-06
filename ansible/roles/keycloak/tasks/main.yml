@@ -1,0 +1,11 @@
+- include: provision.yml
+  tags:
+    - provision
+
+- include: deploy.yml
+  tags:
+    - deploy
+
+- include: keycloak_bootstrap.yml
+  tags:
+    - keycloak-bootstrap
